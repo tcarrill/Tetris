@@ -1,6 +1,7 @@
 package tetris.model;
 
 import org.newdawn.slick.Color;
+import tetris.Utility;
 
 /**
  * Created by thomas on 3/19/14.
@@ -16,12 +17,12 @@ public class Particle {
     public static final int MAX_SPEED = 1;
 
     private int state = STATE_ALIVE;
-    private int width = (int)(MIN_DIMENSION + Math.random() * (MAX_DIMENSION - MIN_DIMENSION));
-    private int height = (int)(MIN_DIMENSION + Math.random() * (MAX_DIMENSION - MIN_DIMENSION));
-    private double xv = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED);
-    private double yv = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED);
+    private int width = Utility.randomInt(MIN_DIMENSION, MAX_DIMENSION);
+    private int height = Utility.randomInt(MIN_DIMENSION, MAX_DIMENSION);
+    private double xv = Utility.randomDouble(MIN_SPEED, MAX_SPEED);
+    private double yv = Utility.randomDouble(MIN_SPEED, MAX_SPEED);
     private int age = 0;
-    private int lifetime = DEFAULT_LIFETIME;
+    private int lifetime = Utility.randomInt(10, 500);
 
     private double x, y;
     private Color color;
@@ -43,11 +44,11 @@ public class Particle {
             y += yv;
 
             int alpha = color.getAlpha();
-            alpha -= 2;
+            alpha -= Utility.randomInt(0, 5);
 
             if (alpha <= 0) {
                 state = STATE_DEAD;
-            } else  {
+            } else {
                 color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
                 age++;
             }
