@@ -51,6 +51,10 @@ public class Board {
         return board[(y * BOARD_WIDTH) + x];
     }
 
+    public void setBlock(int x, int y, Tetromino tetromino) {
+        board[(y * BOARD_WIDTH) + x] = tetromino;
+    }
+
     public Block getCurrentBlock() {
         return curPiece;
     }
@@ -99,7 +103,7 @@ public class Board {
         for (int i = 0; i < 4; i++) {
             int x = curX + curPiece.x(i);
             int y = curY - curPiece.y(i);
-            board[(y * BOARD_WIDTH) + x] = curPiece.getBlock();
+            setBlock(x, y, curPiece.getBlock());
         }
 
         removeFullLines();
@@ -190,16 +194,17 @@ public class Board {
                     numSequentialLines = 1;
                 }
 
+                for (int j = 0; j < BOARD_WIDTH; j++) {
+                    Tetromino tetromino = getBlock(j, i);
+                    explosions.add(new Explosion(100, j, BOARD_HEIGHT - i, BoardRenderer.colors[tetromino.ordinal()]));
+                }
+
                 for (int k = i; k < BOARD_HEIGHT - 1; k++) {
                     for (int j = 0; j < BOARD_WIDTH; j++) {
-                        board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
+                        setBlock(j, k, getBlock(j, k + 1)); //Shift blocks down
                     }
                 }
                 lastFullLine = i;
-
-                for (int j = 0; j < BOARD_WIDTH; j++) {
-                    explosions.add(new Explosion(100, i, j, BoardRenderer.colors[getBlock(i, j).ordinal()]));
-                }
             }
         }
 

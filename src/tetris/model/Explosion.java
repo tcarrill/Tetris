@@ -12,6 +12,10 @@ public class Explosion {
     private Particle[] particles;
     private int state;
 
+    public Explosion(int particleNum, int x, int y) {
+        this(particleNum, x, y, Color.red);
+    }
+
     public Explosion(int particleNum, int x, int y, Color color) {
         state = STATE_ALIVE;
         particles = new Particle[particleNum];
