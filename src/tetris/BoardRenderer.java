@@ -88,9 +88,7 @@ public class BoardRenderer implements Renderer {
 
         for (Explosion explosion : board.getExplosions()) {
             for (Particle particle : explosion.getParticles()) {
-                int x = particle.getX() * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
-                int y = particle.getY() * SQUARE_HEIGHT - CENTER_BOARD_TOP;
-                drawParticle(x, y, Color.red, graphics);
+                drawParticle(particle, graphics);
             }
         }
     }
@@ -135,9 +133,11 @@ public class BoardRenderer implements Renderer {
         }
     }
 
-    private void drawParticle(int x, int y, Color color, Graphics g) {
-        g.setColor(color);
-        g.fillRect(x, y, 5, 5);
+    private void drawParticle(Particle particle, Graphics g) {
+        g.setColor(particle.getColor());
+        float x = (float)(particle.getX() * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1);
+        float y = (float)(particle.getY() * SQUARE_HEIGHT + CENTER_BOARD_TOP);
+        g.fillRect(x, y, particle.getWidth(), particle.getHeight());
     }
 
     public void setShowingGrid(boolean isShowingGrid) {
