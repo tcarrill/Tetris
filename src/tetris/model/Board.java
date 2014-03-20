@@ -1,5 +1,10 @@
 package tetris.model;
 
+import tetris.BoardRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by thomas on 1/16/14.
  */
@@ -16,6 +21,7 @@ public class Board {
     private Tetromino[] board;
     private boolean topOut = false;
     private Score score;
+    private List<Explosion> explosions = new ArrayList<Explosion>();
 
     public Board(Score score) {
         curPiece = new Block();
@@ -32,6 +38,12 @@ public class Board {
             } else {
                 oneLineDown();
             }
+        }
+    }
+
+    public void explosionUpdate() {
+        for(Explosion explosion : explosions) {
+            explosion.update();
         }
     }
 
@@ -54,6 +66,7 @@ public class Board {
     public void start() {
         isFallingFinished = false;
         score.reset();
+        explosions.clear();
         clearBoard();
         spawnPiece();
     }
@@ -183,6 +196,10 @@ public class Board {
                     }
                 }
                 lastFullLine = i;
+
+                for (int j = 0; j < BOARD_WIDTH; j++) {
+                    explosions.add(new Explosion(100, i, j, BoardRenderer.colors[getBlock(i, j).ordinal()]));
+                }
             }
         }
 
@@ -204,5 +221,9 @@ public class Board {
 
     public boolean isTopOut() {
         return topOut;
+    }
+
+    public List<Explosion> getExplosions() {
+        return explosions;
     }
 }

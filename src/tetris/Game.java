@@ -81,6 +81,8 @@ public class Game extends BasicGame implements KeyListener, Observer {
                 lastBoardUpdate = getTime();
                 board.update();
             }
+
+            board.explosionUpdate();
         }
     }
 

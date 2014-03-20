@@ -66,15 +66,7 @@ public class Block {
         int x = Math.abs(r.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setBlock(values[x]);
-        //setBlock(Tetromino.IBlock);
-    }
-
-    public int minY() {
-        int m = coords[0][1];
-        for (int i = 0; i < 4; i++) {
-            m = Math.min(m, coords[i][1]);
-        }
-        return m;
+        setBlock(Tetromino.OBlock);
     }
 
     public Block rotateLeft() {

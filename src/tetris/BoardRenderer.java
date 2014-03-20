@@ -3,9 +3,7 @@ package tetris;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import tetris.model.Block;
-import tetris.model.Board;
-import tetris.model.Tetromino;
+import tetris.model.*;
 
 /**
  * Created by thomas on 1/21/14.
@@ -26,7 +24,8 @@ public class BoardRenderer implements Renderer {
     private GameContainer gameContainer;
     private boolean isShowingGrid = false;
 
-    private static final Color colors[] = {
+    // todo: move this somewhere else
+    public static final Color colors[] = {
             new Color(0, 0, 0),
             new Color(1, 255, 255),
             new Color(0, 0, 255),
@@ -55,10 +54,9 @@ public class BoardRenderer implements Renderer {
                 Tetromino block = board.getBlock(j, Board.BOARD_HEIGHT - i - 1);
 
                 if (block != Tetromino.None) {
-                    drawSquare(j * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1,
-                            CENTER_BOARD_TOP + i * SQUARE_HEIGHT,
-                            colors[block.ordinal()],
-                            graphics);
+                    int x = j * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
+                    int y = i * SQUARE_HEIGHT + CENTER_BOARD_TOP;
+                    drawSquare(x, y, colors[block.ordinal()], graphics);
                 }
             }
         }
@@ -66,17 +64,14 @@ public class BoardRenderer implements Renderer {
         Block currentBlock = board.getCurrentBlock();
         if (currentBlock.getBlock() != Tetromino.None) {
             for (int i = 0; i < 4; i++) {
-                int x = board.getCurrentX() + currentBlock.x(i);
-                int y = board.getCurrentY() - currentBlock.y(i);
-                drawSquare(x * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1,
-                        CENTER_BOARD_TOP + (Board.BOARD_HEIGHT - y - 1) * SQUARE_HEIGHT,
-                        colors[currentBlock.getBlock().ordinal()],
-                        graphics);
+                int x = (board.getCurrentX() + currentBlock.x(i)) * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
+                int y = CENTER_BOARD_TOP + (Board.BOARD_HEIGHT - (board.getCurrentY() - currentBlock.y(i)) - 1) * SQUARE_HEIGHT;
+                drawSquare(x, y, colors[currentBlock.getBlock().ordinal()], graphics);
             }
         }
 
         // Preview Next Piece
-        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP + 30, Game.NEXT);
+        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Game.NEXT);
         graphics.setColor(Color.white);
         graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
         graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 55, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
@@ -89,6 +84,14 @@ public class BoardRenderer implements Renderer {
             int y = CENTER_BOARD_TOP + 100 + pos[1] * SQUARE_HEIGHT;
 
             drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
+        }
+
+        for (Explosion explosion : board.getExplosions()) {
+            for (Particle particle : explosion.getParticles()) {
+                int x = particle.getX() * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
+                int y = particle.getY() * SQUARE_HEIGHT - CENTER_BOARD_TOP;
+                drawParticle(x, y, Color.red, graphics);
+            }
         }
     }
 
@@ -130,6 +133,11 @@ public class BoardRenderer implements Renderer {
             int y = CENTER_BOARD_TOP + (i * SQUARE_HEIGHT);
             g.drawLine(CENTER_BOARD_LEFT, y, CENTER_BOARD_RIGHT, y);
         }
+    }
+
+    private void drawParticle(int x, int y, Color color, Graphics g) {
+        g.setColor(color);
+        g.fillRect(x, y, 5, 5);
     }
 
     public void setShowingGrid(boolean isShowingGrid) {
