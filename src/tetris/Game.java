@@ -2,6 +2,7 @@ package tetris;
 
 import org.newdawn.slick.*;
 import tetris.model.Board;
+import tetris.model.Explosion;
 import tetris.model.Score;
 
 public class Game extends BasicGame implements KeyListener, Observer {
@@ -105,6 +106,12 @@ public class Game extends BasicGame implements KeyListener, Observer {
             g.fillRect(CENTER_WIDTH - (textCenterWidth * 2), CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
             gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
         }
+    }
+
+    @Override
+    public void mousePressed(int button, int x, int y) {
+        System.out.println("Mouse Clicked " + button + " (" + x + ", " + y + ")");
+        board.getExplosions().add(new Explosion(100, x, y));
     }
 
     @Override

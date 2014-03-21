@@ -66,7 +66,7 @@ public class Block {
         int x = Math.abs(random.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setBlock(values[x]);
-        //setBlock(Tetromino.OBlock);
+        setBlock(Tetromino.OBlock);
     }
 
     public Block rotateLeft() {

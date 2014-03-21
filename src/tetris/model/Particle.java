@@ -3,34 +3,47 @@ package tetris.model;
 import org.newdawn.slick.Color;
 import tetris.Utility;
 
+import java.util.Random;
+
 /**
  * Created by thomas on 3/19/14.
  */
 public class Particle {
+    private static final Random random = new Random();
     public static final int STATE_ALIVE = 0;
     public static final int STATE_DEAD = 1;
 
-    public static final int DEFAULT_LIFETIME = 500;
+    public static final int MIN_AGE = 250;
+    public static final int MAX_AGE = 500;
     public static final int MIN_DIMENSION = 1;
     public static final int MAX_DIMENSION = 5;
     public static final int MIN_SPEED = -5;
     public static final int MAX_SPEED = 5;
 
     private int state = STATE_ALIVE;
-    private int width = Utility.randomInt(MIN_DIMENSION, MAX_DIMENSION);
-    private int height = Utility.randomInt(MIN_DIMENSION, MAX_DIMENSION);
-    private double xv = Utility.randomDouble(MIN_SPEED, MAX_SPEED);
-    private double yv = Utility.randomDouble(MIN_SPEED, MAX_SPEED);
+    private int width;
+    private int height;
+    private double xv;
+    private double yv;
     private int age = 0;
-    private int lifetime = Utility.randomInt(10, 500);
+    private int lifetime;
 
     private double x, y;
     private Color color;
 
+    public Particle(int x, int y) {
+        this(x, y, new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255), 255));
+    }
     public Particle(int x, int y, Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
+
+        width = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
+        height = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
+        lifetime = random.nextInt(MAX_AGE) + MIN_AGE;
+        xv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
+        yv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
 
         if (xv * xv + yv * yv > MAX_SPEED * MAX_SPEED) {
             xv *= 0.7;
