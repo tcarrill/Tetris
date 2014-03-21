@@ -196,6 +196,7 @@ public class Board {
 
                 for (int j = 0; j < BOARD_WIDTH; j++) {
                     Tetromino tetromino = getBlock(j, i);
+                    // todo: BOARD_HEIGHT - i is shitty
                     explosions.add(new Explosion(100, j, BOARD_HEIGHT - i, BoardRenderer.colors[tetromino.ordinal()]));
                 }
 

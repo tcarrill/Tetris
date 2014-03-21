@@ -13,8 +13,8 @@ public class Particle {
     public static final int DEFAULT_LIFETIME = 500;
     public static final int MIN_DIMENSION = 1;
     public static final int MAX_DIMENSION = 5;
-    public static final int MIN_SPEED = -1;
-    public static final int MAX_SPEED = 1;
+    public static final int MIN_SPEED = -5;
+    public static final int MAX_SPEED = 5;
 
     private int state = STATE_ALIVE;
     private int width = Utility.randomInt(MIN_DIMENSION, MAX_DIMENSION);
@@ -44,7 +44,7 @@ public class Particle {
             y += yv;
 
             int alpha = color.getAlpha();
-            alpha -= Utility.randomInt(0, 5);
+            alpha -= Utility.randomInt(5, 15);
 
             if (alpha <= 0) {
                 state = STATE_DEAD;

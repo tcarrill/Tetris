@@ -27,13 +27,13 @@ public class BoardRenderer implements Renderer {
     // todo: move this somewhere else
     public static final Color colors[] = {
             new Color(0, 0, 0),
-            new Color(1, 255, 255),
-            new Color(0, 0, 255),
-            new Color(255, 165, 0),
-            new Color(255, 255, 2),
-            new Color(128, 255, 1),
-            new Color(128, 1, 128),
-            new Color(255, 0, 0)
+            new Color(1, 255, 255),  //I
+            new Color(0, 0, 255),    //J
+            new Color(255, 165, 0),  //L
+            new Color(255, 255, 2),  //O
+            new Color(128, 255, 1),  //S
+            new Color(128, 1, 128),  //T
+            new Color(255, 0, 0)     //Z
     };
 
     public BoardRenderer(Board board, GameContainer gameContainer) {

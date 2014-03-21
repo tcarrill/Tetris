@@ -66,7 +66,6 @@ public class Block {
         int x = Math.abs(random.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setBlock(values[x]);
-        System.out.println(block);
         //setBlock(Tetromino.OBlock);
     }
 

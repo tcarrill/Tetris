@@ -33,10 +33,10 @@ public class Explosion {
                     particle.update();
                 }
             }
+        }
 
-            if (allParticlesDead) {
-                state = STATE_DEAD;
-            }
+        if (allParticlesDead) {
+            state = STATE_DEAD;
         }
     }
 
