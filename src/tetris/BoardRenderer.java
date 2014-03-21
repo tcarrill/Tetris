@@ -88,7 +88,9 @@ public class BoardRenderer implements Renderer {
 
         for (Explosion explosion : board.getExplosions()) {
             for (Particle particle : explosion.getParticles()) {
-                drawParticle(particle, graphics);
+                if (particle.isAlive()) {
+                    drawParticle(particle, graphics);
+                }
             }
         }
     }

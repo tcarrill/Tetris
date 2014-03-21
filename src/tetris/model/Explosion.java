@@ -2,6 +2,8 @@ package tetris.model;
 
 import org.newdawn.slick.Color;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,22 +14,22 @@ public class Explosion {
     public static final int STATE_ALIVE = 0;
     public static final int STATE_DEAD = 1;
 
-    private Particle[] particles;
+    private List<Particle> particles;
     private int state;
 
     public Explosion(int particleNum, int x, int y) {
         state = STATE_ALIVE;
-        particles = new Particle[particleNum];
-        for (int i = 0; i < particles.length; i++) {
-            particles[i] = new Particle(x, y);
+        particles = new ArrayList<Particle>(particleNum);
+        for (int i = 0; i < particleNum; i++) {
+            particles.add(new Particle(x, y));
         }
     }
 
     public Explosion(int particleNum, int x, int y, Color color) {
         state = STATE_ALIVE;
-        particles = new Particle[particleNum];
-        for (int i = 0; i < particles.length; i++) {
-            particles[i] = new Particle(x, y, color);
+        particles = new ArrayList<Particle>(particleNum);
+        for (int i = 0; i < particleNum; i++) {
+            particles.add(new Particle(x, y, color));
         }
     }
 
@@ -44,10 +46,11 @@ public class Explosion {
 
         if (allParticlesDead) {
             state = STATE_DEAD;
+            particles.clear();
         }
     }
 
-    public Particle[] getParticles() {
+    public List<Particle> getParticles() {
         return particles;
     }
 
