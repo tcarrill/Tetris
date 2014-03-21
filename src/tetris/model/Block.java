@@ -7,17 +7,18 @@ import java.util.Random;
  */
 public class Block {
     private static final int[][][] relativeCoordsTable = new int[][][]{
-            {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
-            {{0, 0}, {-1, 0}, {-2, 0}, {1, 0}},    // IBlock
-            {{0, 0}, {1, 1}, {1, 0}, {-1, 0}},     // JBlock
-            {{0, 0}, {0, 1}, {1, 0}, {-1, 1}},     // LBlock
-            {{0, 0}, {-1, 0}, {-1, 1}, {0, 1}},  // OBlock
-            {{0, 0}, {0, 1}, {-1, 1}, {1, 0}},   // SBlock
-            {{0, 0}, {-1, 0}, {1, 0}, {0, 1}},      // TBlock
-            {{0, 0}, {0, 1}, {1, 1}, {-1, 0}}    // ZBlock
+            {{  0, 0 }, {  0, 0 }, {  0, 0 }, {  0, 0 }},
+            {{ -2, 0 }, { -1, 0 }, {  0, 0 }, {  1, 0 }}, // IBlock
+            {{ -1, 0 }, {  0, 0 }, {  1, 0 }, {  1, 1 }}, // JBlock
+            {{ -1, 0 }, {  0, 0 }, {  1, 0 }, { -1, 1 }}, // LBlock
+            {{ -1, 0 }, {  0, 0 }, { -1, 1 }, {  0, 1 }}, // OBlock
+            {{  0, 0 }, {  1, 0 }, { -1, 1 }, {  0, 1 }}, // SBlock
+            {{ -1, 0 }, {  0, 0 }, {  1, 0 }, {  0, 1 }}, // TBlock
+            {{ -1, 0 }, {  0, 0 }, {  0, 1 }, {  1, 1 }}  // ZBlock
     };
     private int coords[][] = new int[4][2];
     private Tetromino block;
+    private Random random = new Random();
 
     public Block() {
         this(Tetromino.None);
@@ -62,10 +63,10 @@ public class Block {
     }
 
     public void setRandomBlock() {
-        Random r = new Random();
-        int x = Math.abs(r.nextInt()) % 7 + 1;
+        int x = Math.abs(random.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setBlock(values[x]);
+        System.out.println(block);
         //setBlock(Tetromino.OBlock);
     }
 
