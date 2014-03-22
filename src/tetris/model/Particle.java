@@ -13,9 +13,9 @@ public class Particle {
     public static final int STATE_DEAD = 1;
 
     public static final int MIN_AGE = 10;
-    public static final int MAX_AGE = 20;
+    public static final int MAX_AGE = 500;
     public static final int MIN_DIMENSION = 1;
-    public static final int MAX_DIMENSION = 3;
+    public static final int MAX_DIMENSION = 5;
     public static final int MIN_SPEED = -1;
     public static final int MAX_SPEED = 1;
 
@@ -56,7 +56,7 @@ public class Particle {
             y += yv;
 
             int alpha = color.getAlpha();
-            alpha -= random.nextInt(10) + 1;
+            alpha -= random.nextInt(20) + 5;
 
             if (alpha <= 0) {
                 state = STATE_DEAD;
