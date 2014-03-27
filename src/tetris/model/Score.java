@@ -46,9 +46,13 @@ public class Score implements Observable {
         this.numLinesRemoved += numLinesRemoved;
 
         if (this.numLinesRemoved % 10 == 0) {
-            currentLevel++;
-            notifyObservers();
+            setLevel(currentLevel + 1);
         }
+    }
+
+    public void setLevel(int level) {
+        currentLevel = level;
+        notifyObservers();
     }
 
     public int getNumTetris() {

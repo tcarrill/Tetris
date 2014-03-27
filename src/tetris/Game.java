@@ -10,9 +10,14 @@ import java.util.ResourceBundle;
 
 public class Game extends BasicGame implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
-            48, 43, 38, 33, 28, 23, 18, 13, 8, 6
+            48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 1 - 9
+            5, 5, 5, // 10 - 12
+            4, 4, 4, // 13 - 15
+            3, 3, 3, // 16 - 18
+            2, 2,  // 19 - 20
+            1 // 21+
     };
-
+    public static final boolean DEBUG = true;
     public static final float FPS = 60;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -149,6 +154,8 @@ public class Game extends BasicGame implements KeyListener, Observer {
                 board.dropDown();
             } else if (input.isKeyDown(Input.KEY_D)) {
                 board.oneLineDown();
+            } else if (DEBUG && input.isKeyDown(Input.KEY_EQUALS)) {
+                score.setLevel(score.getCurrentLevel() + 1);
             }
         }
 
@@ -159,6 +166,10 @@ public class Game extends BasicGame implements KeyListener, Observer {
 
     @Override
     public void update(Observable observable) {
-        currentFallRate = (FRAMES_PER_DROP[score.getCurrentLevel() - 1] / FPS) * 1000;
+        int index = score.getCurrentLevel() - 1;
+        if (index >= FRAMES_PER_DROP.length) {
+            index = FRAMES_PER_DROP.length - 1;
+        }
+        currentFallRate = (FRAMES_PER_DROP[index] / FPS) * 1000;
     }
 }
