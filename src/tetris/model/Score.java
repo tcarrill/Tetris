@@ -16,7 +16,7 @@ public class Score implements Observable {
     private int numPieces = 0;
     private int numLinesRemoved = 0;
     private int numTetris = 0;
-    private int currentLevel = 1;
+    private int currentLevel = 0;
     private List<Observer> observers;
 
     private Map<Tetromino, Integer> statistics = new HashMap<Tetromino, Integer>();

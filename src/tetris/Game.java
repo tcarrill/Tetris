@@ -1,16 +1,20 @@
 package tetris;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.font.effects.ColorEffect;
 import tetris.model.Board;
 import tetris.model.Explosion;
 import tetris.model.Score;
 
+import java.awt.Font;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Game extends BasicGame implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
-            48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 1 - 9
+            48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0 - 9
             5, 5, 5, // 10 - 12
             4, 4, 4, // 13 - 15
             3, 3, 3, // 16 - 18
@@ -34,10 +38,16 @@ public class Game extends BasicGame implements KeyListener, Observer {
     private long pausedPressTime = 0;
     private boolean gameover = false;
     private Score score;
+    private UnicodeFont font;
     public static final ResourceBundle resources = ResourceBundle.getBundle("tetris.resources.Strings", Locale.getDefault());
+    private static final String TITLE = resources.getString("title");
+    private static final String SCORE = resources.getString("score");
+    private static final String PAUSED = resources.getString("paused");
+    private static final String GAMEOVER = resources.getString("gameover");
+    private static final String LEVEL = resources.getString("level");
 
     public Game() {
-        super(resources.getString("title"));
+        super(TITLE);
     }
 
     public static void main(String[] argv) {
@@ -64,6 +74,12 @@ public class Game extends BasicGame implements KeyListener, Observer {
         score.registerObserver(this);
         board = new Board(score);
         boardRenderer = new BoardRenderer(board, gameContainer);
+        font = new UnicodeFont(new Font("Times New Roman", Font.PLAIN, 20));
+        font.addAsciiGlyphs();
+
+        font.getEffects().add(new ColorEffect(java.awt.Color.white));
+
+        font.loadGlyphs();
         start();
     }
 
@@ -101,19 +117,19 @@ public class Game extends BasicGame implements KeyListener, Observer {
         boardRenderer.render(g);
 
         //TODO: move these to a proper renderer
-        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, resources.getString("level") + score.getCurrentLevel());
-        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, resources.getString("score") + score.getScore());
+        font.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + score.getCurrentLevel(), Color.white);
+        font.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + score.getScore(), Color.white);
 
         if (gameover) {
-            int textCenterWidth = gameContainer.getDefaultFont().getWidth(resources.getString("gameover")) / 2;
-            int textCenterHeight = gameContainer.getDefaultFont().getHeight(resources.getString("gameover")) / 2;
-            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, resources.getString("gameover"));
+            int textCenterWidth = font.getWidth(GAMEOVER) / 2;
+            int textCenterHeight = font.getHeight(GAMEOVER) / 2;
+            font.drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, GAMEOVER, Color.red);
         } else if (gameContainer.isPaused()) {
-            int textCenterWidth = gameContainer.getDefaultFont().getWidth(resources.getString("paused")) / 2;
-            int textCenterHeight = gameContainer.getDefaultFont().getHeight(resources.getString("paused")) / 2;
+            int textCenterWidth = font.getWidth(PAUSED) / 2;
+            int textCenterHeight = font.getHeight(PAUSED) / 2;
             g.setColor(Color.red);
             g.fillRect(CENTER_WIDTH - (textCenterWidth * 2), CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
-            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, resources.getString("paused"), Color.yellow);
+            font.drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
         }
     }
 
@@ -166,7 +182,7 @@ public class Game extends BasicGame implements KeyListener, Observer {
 
     @Override
     public void update(Observable observable) {
-        int index = score.getCurrentLevel() - 1;
+        int index = score.getCurrentLevel();
         if (index >= FRAMES_PER_DROP.length) {
             index = FRAMES_PER_DROP.length - 1;
         }
