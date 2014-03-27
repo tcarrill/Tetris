@@ -5,6 +5,9 @@ import tetris.model.Board;
 import tetris.model.Explosion;
 import tetris.model.Score;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class Game extends BasicGame implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
             48, 43, 38, 33, 28, 23, 18, 13, 8, 6
@@ -18,14 +21,6 @@ public class Game extends BasicGame implements KeyListener, Observer {
     public static final boolean FULL_SCREEN = false;
     public static final boolean SHOW_FPS = false;
 
-    //TODO: put these in a resource bundle
-    public static final String TITLE = "Tetris";
-    public static final String PAUSED = "P A U S E D";
-    public static final String GAMEOVER = "G A M E O V E R";
-    public static final String SCORE = "Score: ";
-    public static final String NEXT = "Next";
-    public static final String LEVEL = "Level: ";
-
     private GameContainer gameContainer;
     private BoardRenderer boardRenderer;
     private Board board;
@@ -34,9 +29,10 @@ public class Game extends BasicGame implements KeyListener, Observer {
     private long pausedPressTime = 0;
     private boolean gameover = false;
     private Score score;
+    public static final ResourceBundle resources = ResourceBundle.getBundle("tetris.resources.Strings", Locale.getDefault());
 
     public Game() {
-        super(TITLE);
+        super(resources.getString("title"));
     }
 
     public static void main(String[] argv) {
@@ -100,19 +96,19 @@ public class Game extends BasicGame implements KeyListener, Observer {
         boardRenderer.render(g);
 
         //TODO: move these to a proper renderer
-        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + score.getCurrentLevel());
-        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + score.getScore());
+        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, resources.getString("level") + score.getCurrentLevel());
+        gameContainer.getDefaultFont().drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, resources.getString("score") + score.getScore());
 
         if (gameover) {
-            int textCenterWidth = gameContainer.getDefaultFont().getWidth(GAMEOVER) / 2;
-            int textCenterHeight = gameContainer.getDefaultFont().getHeight(GAMEOVER) / 2;
-            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, GAMEOVER);
+            int textCenterWidth = gameContainer.getDefaultFont().getWidth(resources.getString("gameover")) / 2;
+            int textCenterHeight = gameContainer.getDefaultFont().getHeight(resources.getString("gameover")) / 2;
+            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, resources.getString("gameover"));
         } else if (gameContainer.isPaused()) {
-            int textCenterWidth = gameContainer.getDefaultFont().getWidth(PAUSED) / 2;
-            int textCenterHeight = gameContainer.getDefaultFont().getHeight(PAUSED) / 2;
+            int textCenterWidth = gameContainer.getDefaultFont().getWidth(resources.getString("paused")) / 2;
+            int textCenterHeight = gameContainer.getDefaultFont().getHeight(resources.getString("paused")) / 2;
             g.setColor(Color.red);
             g.fillRect(CENTER_WIDTH - (textCenterWidth * 2), CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
-            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
+            gameContainer.getDefaultFont().drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, resources.getString("paused"), Color.yellow);
         }
     }
 

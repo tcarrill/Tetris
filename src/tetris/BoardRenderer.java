@@ -71,7 +71,7 @@ public class BoardRenderer implements Renderer {
         }
 
         // Preview Next Piece
-        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Game.NEXT);
+        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Game.resources.getString("next"));
         graphics.setColor(Color.white);
         graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
         graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 55, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
