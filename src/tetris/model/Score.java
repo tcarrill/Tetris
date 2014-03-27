@@ -47,6 +47,7 @@ public class Score implements Observable {
 
         if (this.numLinesRemoved % 10 == 0) {
             currentLevel++;
+            notifyObservers();
         }
     }
 

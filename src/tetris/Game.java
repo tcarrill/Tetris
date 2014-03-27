@@ -6,7 +6,11 @@ import tetris.model.Explosion;
 import tetris.model.Score;
 
 public class Game extends BasicGame implements KeyListener, Observer {
-    public static final byte FPS = 60;
+    public static final float[] FRAMES_PER_DROP = new float[] {
+            48, 43, 38, 33, 28, 23, 18, 13, 8, 6
+    };
+
+    public static final float FPS = 60;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final int CENTER_WIDTH = WIDTH / 2;
@@ -25,8 +29,8 @@ public class Game extends BasicGame implements KeyListener, Observer {
     private GameContainer gameContainer;
     private BoardRenderer boardRenderer;
     private Board board;
-    private long lastBoardUpdate = 0;
-    private int currentBoardTick = 800;
+    private long counter = 0;
+    private float currentFallRate = (FRAMES_PER_DROP[0] / FPS) * 1000;
     private long pausedPressTime = 0;
     private boolean gameover = false;
     private Score score;
@@ -40,7 +44,7 @@ public class Game extends BasicGame implements KeyListener, Observer {
         try {
             app = new AppGameContainer(new Game());
             app.setDisplayMode(WIDTH, HEIGHT, FULL_SCREEN);
-            app.setTargetFrameRate(FPS);
+            app.setTargetFrameRate((int)FPS);
             app.setShowFPS(SHOW_FPS);
             app.start();
         } catch (SlickException ex) {
@@ -73,13 +77,17 @@ public class Game extends BasicGame implements KeyListener, Observer {
             return;
         }
 
+
+
         if (!gameContainer.isPaused()) {
             if (board.isTopOut()) {
                 gameover = true;
             }
 
-            if ((getTime() - lastBoardUpdate) > currentBoardTick) {
-                lastBoardUpdate = getTime();
+            counter += delta;
+
+            if (counter >= currentFallRate) {
+                counter = 0;
                 board.update();
             }
 
@@ -110,7 +118,6 @@ public class Game extends BasicGame implements KeyListener, Observer {
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        System.out.println("Mouse Clicked " + button + " (" + x + ", " + y + ")");
         board.getExplosions().add(new Explosion(100, x, y));
     }
 
@@ -156,6 +163,6 @@ public class Game extends BasicGame implements KeyListener, Observer {
 
     @Override
     public void update(Observable observable) {
-        currentBoardTick -= 84;
+        currentFallRate = (FRAMES_PER_DROP[score.getCurrentLevel() - 1] / FPS) * 1000;
     }
 }

@@ -1,6 +1,7 @@
 package tetris.model;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Polygon;
 
 import java.util.Random;
 
@@ -29,6 +30,7 @@ public class Particle {
 
     private double x, y;
     private Color color;
+    private Polygon shape;
 
     public Particle(int x, int y) {
         this(x, y, new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255), 255));
