@@ -1,18 +1,22 @@
-package tetris;
+package tetris.states;
 
-import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
+import tetris.BoardRenderer;
+import tetris.Observable;
+import tetris.Observer;
+import tetris.Tetris;
 import tetris.model.Board;
 import tetris.model.Explosion;
 import tetris.model.Score;
 
 import java.awt.Font;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-public class Game extends BasicGame implements KeyListener, Observer {
+public class Game extends BasicGameState implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
             48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0 - 9
             5, 5, 5, // 10 - 12
@@ -21,54 +25,30 @@ public class Game extends BasicGame implements KeyListener, Observer {
             2, 2,  // 19 - 20
             1 // 21+
     };
+    public static final int ID = 1;
     public static final boolean DEBUG = true;
-    public static final float FPS = 60;
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
-    public static final int CENTER_WIDTH = WIDTH / 2;
-    public static final int CENTER_HEIGHT = HEIGHT / 2;
-    public static final boolean FULL_SCREEN = false;
-    public static final boolean SHOW_FPS = false;
 
     private GameContainer gameContainer;
     private BoardRenderer boardRenderer;
     private Board board;
     private long counter = 0;
-    private float currentFallRate = (FRAMES_PER_DROP[0] / FPS) * 1000;
+    private float currentFallRate = calculateFallRate(0);
     private long pausedPressTime = 0;
     private boolean gameover = false;
     private Score score;
     private UnicodeFont font;
-    public static final ResourceBundle resources = ResourceBundle.getBundle("tetris.resources.Strings", Locale.getDefault());
-    private static final String TITLE = resources.getString("title");
-    private static final String SCORE = resources.getString("score");
-    private static final String PAUSED = resources.getString("paused");
-    private static final String GAMEOVER = resources.getString("gameover");
-    private static final String LEVEL = resources.getString("level");
+    private static final String SCORE = Tetris.resources.getString("score");
+    private static final String PAUSED = Tetris.resources.getString("paused");
+    private static final String GAMEOVER = Tetris.resources.getString("gameover");
+    private static final String LEVEL = Tetris.resources.getString("level");
 
-    public Game() {
-        super(TITLE);
-    }
-
-    public static void main(String[] argv) {
-        AppGameContainer app;
-        try {
-            app = new AppGameContainer(new Game());
-            app.setDisplayMode(WIDTH, HEIGHT, FULL_SCREEN);
-            app.setTargetFrameRate((int)FPS);
-            app.setShowFPS(SHOW_FPS);
-            app.start();
-        } catch (SlickException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public long getTime() {
-        return gameContainer.getTime();
+    @Override
+    public int getID() {
+        return ID;
     }
 
     @Override
-    public void init(GameContainer gameContainer) throws SlickException {
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
         score = new Score();
         score.registerObserver(this);
@@ -83,18 +63,32 @@ public class Game extends BasicGame implements KeyListener, Observer {
         start();
     }
 
-    private void start() {
-        gameover = false;
-        board.start();
+    @Override
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        boardRenderer.render(graphics);
+
+        //TODO: move these to a proper renderer
+        font.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + score.getCurrentLevel(), Color.white);
+        font.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + score.getScore(), Color.white);
+
+        if (gameover) {
+            int textCenterWidth = font.getWidth(GAMEOVER) / 2;
+            int textCenterHeight = font.getHeight(GAMEOVER) / 2;
+            font.drawString(Tetris.CENTER_WIDTH - textCenterWidth, Tetris.CENTER_HEIGHT - textCenterHeight, GAMEOVER, Color.red);
+        } else if (gameContainer.isPaused()) {
+            int textCenterWidth = font.getWidth(PAUSED) / 2;
+            int textCenterHeight = font.getHeight(PAUSED) / 2;
+            graphics.setColor(Color.red);
+            graphics.fillRect(Tetris.CENTER_WIDTH - (textCenterWidth * 2), Tetris.CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
+            font.drawString(Tetris.CENTER_WIDTH - textCenterWidth, Tetris.CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
+        }
     }
 
     @Override
-    public void update(GameContainer gameContainer, int delta) throws SlickException {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         if (gameover) {
             return;
         }
-
-
 
         if (!gameContainer.isPaused()) {
             if (board.isTopOut()) {
@@ -112,25 +106,13 @@ public class Game extends BasicGame implements KeyListener, Observer {
         }
     }
 
-    @Override
-    public void render(GameContainer gameContainer, Graphics g) throws SlickException {
-        boardRenderer.render(g);
+    public long getTime() {
+        return gameContainer.getTime();
+    }
 
-        //TODO: move these to a proper renderer
-        font.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + score.getCurrentLevel(), Color.white);
-        font.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + score.getScore(), Color.white);
-
-        if (gameover) {
-            int textCenterWidth = font.getWidth(GAMEOVER) / 2;
-            int textCenterHeight = font.getHeight(GAMEOVER) / 2;
-            font.drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, GAMEOVER, Color.red);
-        } else if (gameContainer.isPaused()) {
-            int textCenterWidth = font.getWidth(PAUSED) / 2;
-            int textCenterHeight = font.getHeight(PAUSED) / 2;
-            g.setColor(Color.red);
-            g.fillRect(CENTER_WIDTH - (textCenterWidth * 2), CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
-            font.drawString(CENTER_WIDTH - textCenterWidth, CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
-        }
+    private void start() {
+        gameover = false;
+        board.start();
     }
 
     @Override
@@ -186,6 +168,10 @@ public class Game extends BasicGame implements KeyListener, Observer {
         if (index >= FRAMES_PER_DROP.length) {
             index = FRAMES_PER_DROP.length - 1;
         }
-        currentFallRate = (FRAMES_PER_DROP[index] / FPS) * 1000;
+        currentFallRate = calculateFallRate(index);
+    }
+
+    private static float calculateFallRate(int index) {
+        return (FRAMES_PER_DROP[index] / Tetris.FPS) * 1000;
     }
 }

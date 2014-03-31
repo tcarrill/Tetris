@@ -12,10 +12,10 @@ public class BoardRenderer implements Renderer {
     public static final int SQUARE_WIDTH = 25;
     public static final int SQUARE_HEIGHT = 25;
     public static final int BORDER_WIDTH = 1;
-    public static final int CENTER_BOARD_LEFT = (Game.WIDTH - (Board.BOARD_WIDTH * SQUARE_WIDTH )) / 2;
-    public static final int CENTER_BOARD_RIGHT = ((Game.WIDTH + (Board.BOARD_WIDTH * SQUARE_WIDTH )) / 2) + BORDER_WIDTH;
-    public static final int CENTER_BOARD_TOP = ((Game.HEIGHT - (Board.BOARD_HEIGHT * SQUARE_HEIGHT)) / 2) + BORDER_WIDTH;
-    public static final int CENTER_BOARD_BOTTOM = ((Game.HEIGHT + (Board.BOARD_HEIGHT * SQUARE_HEIGHT)) / 2) + BORDER_WIDTH;
+    public static final int CENTER_BOARD_LEFT = (Tetris.WIDTH - (Board.BOARD_WIDTH * SQUARE_WIDTH )) / 2;
+    public static final int CENTER_BOARD_RIGHT = ((Tetris.WIDTH + (Board.BOARD_WIDTH * SQUARE_WIDTH )) / 2) + BORDER_WIDTH;
+    public static final int CENTER_BOARD_TOP = ((Tetris.HEIGHT - (Board.BOARD_HEIGHT * SQUARE_HEIGHT)) / 2) + BORDER_WIDTH;
+    public static final int CENTER_BOARD_BOTTOM = ((Tetris.HEIGHT + (Board.BOARD_HEIGHT * SQUARE_HEIGHT)) / 2) + BORDER_WIDTH;
 
     public static final int PREVIEW_WIDTH = SQUARE_WIDTH * 5;
     public static final int PREVIEW_HEIGHT = SQUARE_HEIGHT * 5;
@@ -71,7 +71,7 @@ public class BoardRenderer implements Renderer {
         }
 
         // Preview Next Piece
-        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Game.resources.getString("next"));
+        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Tetris.resources.getString("next"));
         graphics.setColor(Color.white);
         graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
         graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 55, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
