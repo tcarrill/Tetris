@@ -23,6 +23,7 @@ public class BoardRenderer implements Renderer {
     private Board board;
     private GameContainer gameContainer;
     private boolean isShowingGrid = false;
+    private static final Color GRID_COLOR = new Color(50, 50, 50);
 
     // todo: move this somewhere else
     public static final Color colors[] = {
@@ -123,7 +124,7 @@ public class BoardRenderer implements Renderer {
     }
 
     private void drawGrid(Graphics g) {
-        g.setColor(Color.white);
+        g.setColor(GRID_COLOR);
         for (int i = 1; i < Board.BOARD_WIDTH; i++) {
             int x = CENTER_BOARD_LEFT + (i * SQUARE_WIDTH);
             g.drawLine(x, CENTER_BOARD_BOTTOM, x, CENTER_BOARD_TOP);
