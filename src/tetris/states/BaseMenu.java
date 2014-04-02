@@ -19,7 +19,7 @@ public abstract class BaseMenu extends BasicGameState {
 
     public BaseMenu() {
         try {
-            menuFont = new UnicodeFont("fonts/ArcadeClassic.ttf", 20, false, false);
+            menuFont = new UnicodeFont("fonts/KarmaSuture.ttf", 20, false, false);
             menuFont.addNeheGlyphs();
             menuFont.getEffects().add(new ColorEffect(java.awt.Color.white));
             menuFont.loadGlyphs();
