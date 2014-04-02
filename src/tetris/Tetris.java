@@ -4,6 +4,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import tetris.states.ContinueMenu;
 import tetris.states.Game;
 import tetris.states.MainMenu;
 
@@ -45,5 +46,6 @@ public class Tetris extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         addState(new MainMenu());
         addState(new Game());
+        addState(new ContinueMenu());
     }
 }

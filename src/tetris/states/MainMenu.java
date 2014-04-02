@@ -1,8 +1,6 @@
 package tetris.states;
 
 import org.newdawn.slick.*;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -11,15 +9,19 @@ import tetris.Tetris;
 /**
  * Created by thomas on 3/30/14.
  */
-public class MainMenu extends BasicGameState implements KeyListener {
+public class MainMenu extends BaseMenu implements KeyListener {
     public static final int ID = 0;
-    private StateBasedGame game;
+
     private static final int PLAY = 0;
-    private static final int HIGHSCORES = 1;
+    private static final int CONTINUE = 1;
+    private static final int HIGHSCORES = 2;
     private int selectedItem = PLAY;
-    private UnicodeFont font;
+
     private static final String PLAY_STRING = Tetris.resources.getString("play");
+    private static final String CONTINUE_STRING = Tetris.resources.getString("continue");
     private static final String HIGHSCORES_STRING = Tetris.resources.getString("highscores");
+
+    private StateBasedGame game;
 
     @Override
     public int getID() {
@@ -29,19 +31,17 @@ public class MainMenu extends BasicGameState implements KeyListener {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         game = stateBasedGame;
-        font = new UnicodeFont("fonts/ArcadeClassic.ttf", 20, false, false);
-        font.addAsciiGlyphs();
-        font.getEffects().add(new ColorEffect(java.awt.Color.white));
-        font.loadGlyphs();
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
-        g.setColor(Color.white);
-        g.drawString(Tetris.TITLE, Tetris.CENTER_WIDTH, 10);
+        menuFont.drawString(Tetris.CENTER_WIDTH - titleTextCenterWidth, 50, Tetris.TITLE, Color.yellow);
 
-        font.drawString(50, 100, PLAY_STRING, selectedItem == PLAY ? Color.red : Color.white);
-        font.drawString(50, 120, HIGHSCORES_STRING, selectedItem == HIGHSCORES ? Color.red : Color.white);
+        menuFont.drawString(70, 100, PLAY_STRING, selectedItem == PLAY ? Color.red : Color.white);
+        menuFont.drawString(70, 130, CONTINUE_STRING, selectedItem == CONTINUE ? Color.red : Color.white);
+        menuFont.drawString(70, 160, HIGHSCORES_STRING, selectedItem == HIGHSCORES ? Color.red : Color.white);
+        menuFont.drawString(Tetris.CENTER_WIDTH - legal1TextCenterWidth, 500, LEGAL1, Color.white);
+        menuFont.drawString(Tetris.CENTER_WIDTH - legal2TextCenterWidth, 520, LEGAL2, Color.white);
     }
 
     @Override
@@ -53,17 +53,23 @@ public class MainMenu extends BasicGameState implements KeyListener {
         switch(key) {
             case Input.KEY_DOWN:
                 if (selectedItem == PLAY) {
+                    selectedItem = CONTINUE;
+                } else if (selectedItem == CONTINUE) {
                     selectedItem = HIGHSCORES;
                 }
                 break;
             case Input.KEY_UP:
-                if (selectedItem == HIGHSCORES) {
+                if (selectedItem == CONTINUE) {
                     selectedItem = PLAY;
+                } else if (selectedItem == HIGHSCORES) {
+                    selectedItem = CONTINUE;
                 }
                 break;
             case Input.KEY_ENTER:
                 if (selectedItem == PLAY) {
                     game.enterState(Game.ID, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+                } else if (selectedItem == CONTINUE) {
+                    game.enterState(ContinueMenu.ID);
                 }
                 break;
         }

@@ -139,8 +139,6 @@ public class BoardRenderer implements Renderer {
         g.setColor(particle.getColor());
         float x = (float)(particle.getX() * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1);
         float y = (float)(particle.getY() * SQUARE_HEIGHT + CENTER_BOARD_TOP);
-        //float x = (float)particle.getX();
-        //float y = (float)particle.getY();
         g.fillRect(x, y, particle.getWidth(), particle.getHeight());
     }
 
