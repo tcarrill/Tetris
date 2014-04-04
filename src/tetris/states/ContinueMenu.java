@@ -85,10 +85,13 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
 
                         sb.append(integer);
                     }
+
                     if (sb.length() == 10) {
                         Integer level = passkeys.get(sb.toString());
+
                         if (level != null) {
-                            System.out.println("PASS KEY ACTIVATED - LEVEL: "+level);
+                            System.out.println("PASS KEY ACTIVATED - LEVEL: " + level);
+                            game.getScore().setLevel(level);
                         }
                     }
 

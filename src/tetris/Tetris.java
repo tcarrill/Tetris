@@ -4,6 +4,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import tetris.model.Score;
 import tetris.states.ContinueMenu;
 import tetris.states.Game;
 import tetris.states.MainMenu;
@@ -24,9 +25,11 @@ public class Tetris extends StateBasedGame {
     public static final int CENTER_HEIGHT = HEIGHT / 2;
     public static final ResourceBundle resources = ResourceBundle.getBundle("tetris.resources.Strings", Locale.getDefault());
     public static final String TITLE = resources.getString("title");
+    private Score score;
 
     public Tetris() {
         super(TITLE);
+        score = new Score();
     }
 
     public static void main(String[] argv) {
@@ -47,5 +50,9 @@ public class Tetris extends StateBasedGame {
         addState(new MainMenu());
         addState(new Game());
         addState(new ContinueMenu());
+    }
+
+    public Score getScore() {
+        return score;
     }
 }

@@ -35,7 +35,9 @@ public class Game extends BasicGameState implements KeyListener, Observer {
     private float currentFallRate = calculateFallRate(0);
     private long pausedPressTime = 0;
     private boolean gameover = false;
+    private Tetris tetris;
     private Score score;
+
     private UnicodeFont font;
     private static final String SCORE = Tetris.resources.getString("score");
     private static final String PAUSED = Tetris.resources.getString("paused");
@@ -50,8 +52,10 @@ public class Game extends BasicGameState implements KeyListener, Observer {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
-        score = new Score();
-        score.registerObserver(this);
+        tetris = (Tetris)stateBasedGame;
+        score = tetris.getScore();
+
+        tetris.getScore().registerObserver(this);
         board = new Board(score);
         boardRenderer = new BoardRenderer(board, gameContainer);
         font = new UnicodeFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -112,6 +116,7 @@ public class Game extends BasicGameState implements KeyListener, Observer {
 
     private void start() {
         gameover = false;
+
         board.start();
     }
 
