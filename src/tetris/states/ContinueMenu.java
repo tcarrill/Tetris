@@ -3,9 +3,7 @@ package tetris.states;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import tetris.Tetris;
-
-import java.util.HashMap;
-import java.util.Map;
+import tetris.model.Passkey;
 
 /**
  * Created by thomas on 3/30/14.
@@ -21,9 +19,8 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
 
     protected int passkeyTextCenterWidth;
     private Tetris game;
-    private Integer[] passkey;
-    private Map<String, Integer> passkeys;
-    private StringBuilder sb;
+    private Passkey passkey;
+
 
     @Override
     public int getID() {
@@ -39,17 +36,11 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        if (sb == null) {
-            sb = new StringBuilder();
+        if (passkey == null) {
+            passkey = new Passkey();
+        } else {
+            passkey.clear();
         }
-
-        if (passkeys == null) {
-            passkeys = new HashMap<String, Integer>();
-            passkeys.put("0073735963", 21);
-        }
-
-        passkey = new Integer[10];
-        sb.setLength(0);
     }
 
     @Override
@@ -61,7 +52,7 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
 
         int startX = 285;
         for (int i = 0; i < 10; i++) {
-            menuFont.drawString(startX, 200, passkey[i] == null ? "_" : passkey[i].toString(), selectedItem == i ? Color.red : Color.white);
+            menuFont.drawString(startX, 200, passkey.getDigit(i) == null ? "_" : passkey.getDigit(i).toString(), selectedItem == i ? Color.red : Color.white);
             startX += (i == 2 || i == 5) ? 40 : 20;
         }
 
@@ -78,42 +69,21 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
         switch(key) {
             case Input.KEY_ENTER:
                 if (selectedItem == BACK) {
-                    for (Integer integer : passkey) {
-                        if (integer == null) {
-                            break;
-                        }
 
-                        sb.append(integer);
-                    }
-
-                    if (sb.length() == 10) {
-                        Integer level = passkeys.get(sb.toString());
-
-                        if (level != null) {
-                            System.out.println("PASS KEY ACTIVATED - LEVEL: " + level);
-                            game.getScore().setLevel(level);
-                        }
-                    }
 
                     game.enterState(MainMenu.ID);
                 }
                 break;
             case Input.KEY_UP:
                 if (selectedItem != BACK) {
-                    passkey[selectedItem] = passkey[selectedItem] == null ? 0 : passkey[selectedItem] + 1;
-                    if (passkey[selectedItem] > 9) {
-                        passkey[selectedItem] = 0;
-                    }
+                    passkey.increment(selectedItem);
                 }
                 break;
             case Input.KEY_DOWN:
                 if (selectedItem == BACK) {
                     selectedItem = 0;
                 } else {
-                    passkey[selectedItem] = passkey[selectedItem] == null ? 9 : passkey[selectedItem] - 1;
-                    if (passkey[selectedItem] < 0) {
-                        passkey[selectedItem] = 9;
-                    }
+                    passkey.decrement(selectedItem);
                 }
                 break;
             case Input.KEY_LEFT:
