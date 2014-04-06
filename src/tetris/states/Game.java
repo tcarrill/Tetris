@@ -1,10 +1,6 @@
 package tetris.states;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import tetris.BoardRenderer;
 import tetris.Observable;
@@ -14,9 +10,7 @@ import tetris.model.Board;
 import tetris.model.Explosion;
 import tetris.model.Score;
 
-import java.awt.Font;
-
-public class Game extends BasicGameState implements KeyListener, Observer {
+public class Game extends BaseState implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
             48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0 - 9
             5, 5, 5, // 10 - 12
@@ -35,14 +29,17 @@ public class Game extends BasicGameState implements KeyListener, Observer {
     private float currentFallRate = calculateFallRate(0);
     private long pausedPressTime = 0;
     private boolean gameover = false;
-    private Tetris tetris;
     private Score score;
 
-    private UnicodeFont font;
     private static final String SCORE = Tetris.resources.getString("score");
     private static final String PAUSED = Tetris.resources.getString("paused");
     private static final String GAMEOVER = Tetris.resources.getString("gameover");
     private static final String LEVEL = Tetris.resources.getString("level");
+    private int gameoverTextCenterHeight;
+    private int gameoverTextCenterWidth;
+
+    private int pausedTextCenterHeight;
+    private int pausedTextCenterWidth;
 
     @Override
     public int getID() {
@@ -52,18 +49,19 @@ public class Game extends BasicGameState implements KeyListener, Observer {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
-        tetris = (Tetris)stateBasedGame;
+        Tetris tetris = (Tetris) stateBasedGame;
         score = tetris.getScore();
 
         tetris.getScore().registerObserver(this);
         board = new Board(score);
         boardRenderer = new BoardRenderer(board, gameContainer);
-        font = new UnicodeFont(new Font("Times New Roman", Font.PLAIN, 20));
-        font.addAsciiGlyphs();
 
-        font.getEffects().add(new ColorEffect(java.awt.Color.white));
+        gameoverTextCenterWidth = menuFont.getWidth(GAMEOVER) / 2;
+        gameoverTextCenterHeight = menuFont.getHeight(GAMEOVER) / 2;
 
-        font.loadGlyphs();
+        pausedTextCenterWidth = menuFont.getWidth(PAUSED) / 2;
+        pausedTextCenterHeight = menuFont.getHeight(PAUSED) / 2;
+
         start();
     }
 
@@ -72,19 +70,17 @@ public class Game extends BasicGameState implements KeyListener, Observer {
         boardRenderer.render(graphics);
 
         //TODO: move these to a proper renderer
-        font.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + score.getCurrentLevel(), Color.white);
-        font.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + score.getScore(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + " " + score.getCurrentLevel(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + " " + score.getScore(), Color.white);
 
         if (gameover) {
-            int textCenterWidth = font.getWidth(GAMEOVER) / 2;
-            int textCenterHeight = font.getHeight(GAMEOVER) / 2;
-            font.drawString(Tetris.CENTER_WIDTH - textCenterWidth, Tetris.CENTER_HEIGHT - textCenterHeight, GAMEOVER, Color.red);
-        } else if (gameContainer.isPaused()) {
-            int textCenterWidth = font.getWidth(PAUSED) / 2;
-            int textCenterHeight = font.getHeight(PAUSED) / 2;
             graphics.setColor(Color.red);
-            graphics.fillRect(Tetris.CENTER_WIDTH - (textCenterWidth * 2), Tetris.CENTER_HEIGHT - (textCenterHeight * 2), textCenterWidth * 4, textCenterHeight * 4);
-            font.drawString(Tetris.CENTER_WIDTH - textCenterWidth, Tetris.CENTER_HEIGHT - textCenterHeight, PAUSED, Color.yellow);
+            graphics.fillRect(Tetris.CENTER_WIDTH - (gameoverTextCenterWidth * 2), Tetris.CENTER_HEIGHT - (gameoverTextCenterHeight * 2), gameoverTextCenterWidth * 4, gameoverTextCenterHeight * 4);
+            menuFont.drawString(Tetris.CENTER_WIDTH - gameoverTextCenterWidth, Tetris.CENTER_HEIGHT - gameoverTextCenterHeight, GAMEOVER, Color.yellow);
+        } else if (gameContainer.isPaused()) {
+            graphics.setColor(Color.red);
+            graphics.fillRect(Tetris.CENTER_WIDTH - (pausedTextCenterWidth * 2), Tetris.CENTER_HEIGHT - (pausedTextCenterHeight * 2), pausedTextCenterWidth * 4, pausedTextCenterHeight * 4);
+            menuFont.drawString(Tetris.CENTER_WIDTH - pausedTextCenterWidth, Tetris.CENTER_HEIGHT - pausedTextCenterHeight, PAUSED, Color.yellow);
         }
     }
 
@@ -116,7 +112,6 @@ public class Game extends BasicGameState implements KeyListener, Observer {
 
     private void start() {
         gameover = false;
-
         board.start();
     }
 

@@ -9,7 +9,7 @@ import tetris.Tetris;
 /**
  * Created by thomas on 4/1/14.
  */
-public abstract class BaseMenu extends BasicGameState {
+public abstract class BaseState extends BasicGameState {
     protected int titleTextCenterWidth;
     protected int legal1TextCenterWidth;
     protected int legal2TextCenterWidth;
@@ -17,7 +17,7 @@ public abstract class BaseMenu extends BasicGameState {
     protected final String LEGAL2 = Tetris.resources.getString("legal2");
     protected UnicodeFont menuFont;
 
-    public BaseMenu() {
+    public BaseState() {
         try {
             menuFont = new UnicodeFont("fonts/KarmaSuture.ttf", 20, false, false);
             menuFont.addNeheGlyphs();

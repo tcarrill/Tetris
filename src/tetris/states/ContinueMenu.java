@@ -8,7 +8,7 @@ import tetris.model.Passkey;
 /**
  * Created by thomas on 3/30/14.
  */
-public class ContinueMenu extends BaseMenu implements KeyListener {
+public class ContinueMenu extends BaseState implements KeyListener {
     public static final int ID = 2;
 
     private static final int BACK = -1;
@@ -69,8 +69,6 @@ public class ContinueMenu extends BaseMenu implements KeyListener {
         switch(key) {
             case Input.KEY_ENTER:
                 if (selectedItem == BACK) {
-
-
                     game.enterState(MainMenu.ID);
                 }
                 break;

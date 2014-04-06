@@ -9,7 +9,7 @@ import tetris.Tetris;
 /**
  * Created by thomas on 3/30/14.
  */
-public class MainMenu extends BaseMenu implements KeyListener {
+public class MainMenu extends BaseState implements KeyListener {
     public static final int ID = 0;
 
     private static final int PLAY = 0;

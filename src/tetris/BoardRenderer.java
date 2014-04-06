@@ -3,6 +3,7 @@ package tetris;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.UnicodeFont;
 import tetris.model.*;
 
 /**
@@ -23,6 +24,7 @@ public class BoardRenderer implements Renderer {
     private Board board;
     private GameContainer gameContainer;
     private boolean isShowingGrid = false;
+    private UnicodeFont font;
     private static final Color GRID_COLOR = new Color(50, 50, 50);
 
     // todo: move this somewhere else
