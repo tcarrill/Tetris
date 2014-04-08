@@ -48,6 +48,11 @@ public class Passkey {
         return passkeyToLevel.get(getPasskeyString()) != null;
     }
 
+    public int getLevel() {
+        Integer level = passkeyToLevel.get(getPasskeyString());
+        return level == null ? 0 : level;
+    }
+
     private String getPasskeyString() {
         for (Integer integer : passkey) {
             if (integer == null) {

@@ -69,6 +69,7 @@ public class ContinueMenu extends BaseState implements KeyListener {
         switch(key) {
             case Input.KEY_ENTER:
                 if (selectedItem == BACK) {
+                    game.getScore().setLevel(passkey.getLevel());
                     game.enterState(MainMenu.ID);
                 }
                 break;
