@@ -74,10 +74,10 @@ public class BoardRenderer implements Renderer {
         }
 
         // Preview Next Piece
-        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 30, Tetris.resources.getString("next"));
+        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, Tetris.resources.getString("next"));
         graphics.setColor(Color.white);
-        graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
-        graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 55, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
+        graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 70, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
+        graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 75, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
 
         Block nextBlock = board.getNextPiece();
 

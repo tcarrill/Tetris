@@ -32,6 +32,7 @@ public class Game extends BaseState implements KeyListener, Observer {
     private Score score;
 
     private static final String SCORE = Tetris.resources.getString("score");
+    private static final String LINES = Tetris.resources.getString("lines");
     private static final String PAUSED = Tetris.resources.getString("paused");
     private static final String GAMEOVER = Tetris.resources.getString("gameover");
     private static final String LEVEL = Tetris.resources.getString("level");
@@ -72,6 +73,7 @@ public class Game extends BaseState implements KeyListener, Observer {
         //TODO: move these to a proper renderer
         menuFont.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + " " + score.getCurrentLevel(), Color.white);
         menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + " " + score.getScore(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP + 20, LINES + " " + score.getNumLinesRemoved(), Color.white);
 
         if (gameover) {
             graphics.setColor(Color.red);
