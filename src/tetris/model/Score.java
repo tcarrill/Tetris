@@ -44,9 +44,10 @@ public class Score implements Observable {
     public void setNumLinesRemoved(int numLinesRemoved) {
         score += numLinesRemoved * 100;
         this.numLinesRemoved += numLinesRemoved;
+        int level = score / 1000;
 
-        if (this.numLinesRemoved % 10 == 0) {
-            setLevel(currentLevel + 1);
+        if (level != currentLevel) {
+            setLevel(level);
         }
     }
 
