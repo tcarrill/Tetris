@@ -15,6 +15,7 @@ public class Board {
     private boolean isFallingFinished = false;
     private int curX = 0;
     private int curY = 0;
+    private int hardDropY = 0;
 
     private Block curPiece;
     private Block nextPiece;
@@ -77,6 +78,7 @@ public class Board {
 
     public void dropDown() {
         int newY = curY;
+        hardDropY = curY;
         while (newY > 0) {
             if (!tryMove(curPiece, curX, newY - 1)) {
                 break;
@@ -202,7 +204,8 @@ public class Board {
         }
 
         if (numFullLines > 0) {
-            score.setNumLinesRemoved(numFullLines);
+            score.setNumLinesRemoved(numFullLines, hardDropY);
+            hardDropY = 0;
             isFallingFinished = true;
             curPiece.setBlock(Tetromino.None);
         }

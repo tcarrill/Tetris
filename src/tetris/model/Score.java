@@ -28,13 +28,31 @@ public class Score implements Observable {
         return numLinesRemoved;
     }
 
-    public void setNumLinesRemoved(int numLinesRemoved) {
-        score += numLinesRemoved == 4 ? 800 : numLinesRemoved * 100;
-        this.numLinesRemoved += numLinesRemoved;
-        int level = score / 1000;
+    public void setNumLinesRemoved(int numLinesRemoved, int hardDropModifier) {
+        if (numLinesRemoved > 0 && numLinesRemoved <= 4) {
+            int scoreModifier;
+            switch(numLinesRemoved) {
+                case 2:
+                    scoreModifier = 300;
+                    break;
+                case 3:
+                    scoreModifier = 500;
+                    break;
+                case 4:
+                    scoreModifier = 800;
+                    break;
+                default:
+                    scoreModifier = 100;
+                    break;
+            }
+            score +=  (scoreModifier * (currentLevel + 1)) + (hardDropModifier * 2);
 
-        if (level != currentLevel) {
-            setLevel(level);
+            this.numLinesRemoved += numLinesRemoved;
+            int level = score / 1000;
+
+            if (level != currentLevel) {
+                setLevel(level);
+            }
         }
     }
 
