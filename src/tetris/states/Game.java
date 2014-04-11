@@ -20,7 +20,7 @@ public class Game extends BaseState implements KeyListener, Observer {
             1 // 21+
     };
     public static final int ID = 1;
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private GameContainer gameContainer;
     private BoardRenderer boardRenderer;
