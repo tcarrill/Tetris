@@ -172,8 +172,6 @@ public class Board {
 
     private void removeFullLines() {
         int numFullLines = 0;
-        int lastFullLine = 0;
-        int numSequentialLines = 0;
 
         for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
             boolean isLineFull = true;
@@ -188,12 +186,6 @@ public class Board {
             if (isLineFull) {
                 numFullLines++;
 
-                if (lastFullLine - i == 1) {
-                    numSequentialLines++;
-                } else {
-                    numSequentialLines = 1;
-                }
-
                 for (int j = 0; j < BOARD_WIDTH; j++) {
                     Tetromino tetromino = getBlock(j, i);
                     // todo: BOARD_HEIGHT - i is shitty
@@ -206,13 +198,7 @@ public class Board {
                         setBlock(j, k, getBlock(j, k + 1)); //Shift blocks down
                     }
                 }
-                lastFullLine = i;
             }
-        }
-
-        if (numSequentialLines == 4) {
-            score.incTetris();
-            numFullLines -= 4;
         }
 
         if (numFullLines > 0) {

@@ -19,6 +19,7 @@ public class Block {
     private int coords[][] = new int[4][2];
     private Tetromino block;
     private Random random = new Random();
+    private static final Tetromino[] TetrominoArray = Tetromino.values();
 
     public Block() {
         this(Tetromino.None);
@@ -64,9 +65,8 @@ public class Block {
 
     public void setRandomBlock() {
         int x = Math.abs(random.nextInt()) % 7 + 1;
-        Tetromino[] values = Tetromino.values();
-        setBlock(values[x]);
-        //setBlock(Tetromino.OBlock);
+        setBlock(TetrominoArray[x]);
+        //setBlock(Tetromino.IBlock);
     }
 
     public Block rotateLeft() {
