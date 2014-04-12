@@ -7,10 +7,9 @@ import tetris.Observable;
 import tetris.Observer;
 import tetris.Tetris;
 import tetris.model.Board;
-import tetris.model.Explosion;
 import tetris.model.Score;
 
-public class Game extends BaseState implements KeyListener, Observer {
+public class GameScreen extends BaseState implements KeyListener, Observer {
     public static final float[] FRAMES_PER_DROP = new float[] {
             48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0 - 9
             5, 5, 5, // 10 - 12
@@ -104,7 +103,7 @@ public class Game extends BaseState implements KeyListener, Observer {
                 board.update();
             }
 
-            board.explosionUpdate();
+            board.particleUpdate();
         }
     }
 
@@ -115,11 +114,6 @@ public class Game extends BaseState implements KeyListener, Observer {
     private void start() {
         gameover = false;
         board.start();
-    }
-
-    @Override
-    public void mousePressed(int button, int x, int y) {
-        board.getExplosions().add(new Explosion(100, x, y));
     }
 
     @Override

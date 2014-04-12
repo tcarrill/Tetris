@@ -2,7 +2,6 @@ package tetris.model;
 
 import tetris.BoardRenderer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +21,13 @@ public class Board {
     private Tetromino[] board;
     private boolean topOut = false;
     private Score score;
-    private List<Explosion> explosions = new ArrayList<Explosion>();
+    private ParticleSystem particleSystem;
 
     public Board(Score score) {
         curPiece = new Block();
         this.score = score;
         board = new Tetromino[BOARD_WIDTH * BOARD_HEIGHT];
+        particleSystem = new ParticleSystem();
         clearBoard();
     }
 
@@ -42,10 +42,8 @@ public class Board {
         }
     }
 
-    public void explosionUpdate() {
-        for(Explosion explosion : explosions) {
-            explosion.update();
-        }
+    public void particleUpdate() {
+        particleSystem.update();
     }
 
     public Tetromino getBlock(int x, int y) {
@@ -71,7 +69,7 @@ public class Board {
     public void start() {
         isFallingFinished = false;
         score.reset();
-        explosions.clear();
+        particleSystem.killAll();
         clearBoard();
         spawnPiece();
     }
@@ -191,8 +189,7 @@ public class Board {
                 for (int j = 0; j < BOARD_WIDTH; j++) {
                     Tetromino tetromino = getBlock(j, i);
                     // todo: BOARD_HEIGHT - i is shitty
-                    // todo: revamp particle system to use a pool
-                    explosions.add(new Explosion(50, j, BOARD_HEIGHT - i, BoardRenderer.colors[tetromino.ordinal()]));
+                    particleSystem.addEmitter(50, j, BOARD_HEIGHT - i, BoardRenderer.colors[tetromino.ordinal()]);
                 }
 
                 for (int k = i; k < BOARD_HEIGHT - 1; k++) {
@@ -219,7 +216,7 @@ public class Board {
         return topOut;
     }
 
-    public List<Explosion> getExplosions() {
-        return explosions;
+    public List<ParticleEmitter> getParticleEmitters() {
+        return particleSystem.getParticleEmitters();
     }
 }

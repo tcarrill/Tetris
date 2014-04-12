@@ -21,7 +21,6 @@ public class ContinueMenu extends BaseState implements KeyListener {
     private Tetris game;
     private Passkey passkey;
 
-
     @Override
     public int getID() {
         return ID;

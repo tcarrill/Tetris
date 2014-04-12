@@ -3,8 +3,9 @@ package tetris;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.UnicodeFont;
 import tetris.model.*;
+
+import java.util.List;
 
 /**
  * Created by thomas on 1/21/14.
@@ -24,7 +25,6 @@ public class BoardRenderer implements Renderer {
     private Board board;
     private GameContainer gameContainer;
     private boolean isShowingGrid = false;
-    private UnicodeFont font;
     private static final Color GRID_COLOR = new Color(50, 50, 50);
 
     // todo: move this somewhere else
@@ -89,10 +89,13 @@ public class BoardRenderer implements Renderer {
             drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
         }
 
-        for (Explosion explosion : board.getExplosions()) {
-            for (Particle particle : explosion.getParticles()) {
-                if (particle.isAlive()) {
-                    drawParticle(particle, graphics);
+        List<ParticleEmitter> emitters = board.getParticleEmitters();
+        if (emitters != null) {
+            for (ParticleEmitter particleEmitter : emitters) {
+                for (Particle particle : particleEmitter.getParticles()) {
+                    if (particle.isAlive()) {
+                        drawParticle(particle, graphics);
+                    }
                 }
             }
         }

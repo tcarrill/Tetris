@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import tetris.model.Score;
 import tetris.states.ContinueMenu;
-import tetris.states.Game;
+import tetris.states.GameScreen;
 import tetris.states.MainMenu;
 
 import java.util.Locale;
@@ -48,7 +48,7 @@ public class Tetris extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         addState(new MainMenu());
-        addState(new Game());
+        addState(new GameScreen());
         addState(new ContinueMenu());
     }
 

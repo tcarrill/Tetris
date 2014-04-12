@@ -67,7 +67,7 @@ public class MainMenu extends BaseState implements KeyListener {
                 break;
             case Input.KEY_ENTER:
                 if (selectedItem == PLAY) {
-                    game.enterState(Game.ID, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+                    game.enterState(GameScreen.ID, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
                 } else if (selectedItem == CONTINUE) {
                     game.enterState(ContinueMenu.ID);
                 }

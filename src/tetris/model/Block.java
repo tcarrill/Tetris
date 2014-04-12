@@ -66,7 +66,7 @@ public class Block {
     public void setRandomBlock() {
         int x = Math.abs(random.nextInt()) % 7 + 1;
         setBlock(TetrominoArray[x]);
-        //setBlock(Tetromino.IBlock);
+        //setBlock(Tetromino.OBlock);
     }
 
     public Block rotateLeft() {

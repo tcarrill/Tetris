@@ -1,7 +1,6 @@
 package tetris.model;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.geom.Polygon;
 
 import java.util.Random;
 
@@ -30,30 +29,17 @@ public class Particle {
 
     private double x, y;
     private Color color;
-    private Polygon shape;
 
     public Particle(int x, int y) {
         this(x, y, new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255), 255));
     }
     public Particle(int x, int y, Color color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-
-        width = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
-        height = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
-        lifetime = random.nextInt(MAX_AGE) + MIN_AGE;
-        xv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
-        yv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
-
-        if (xv * xv + yv * yv > MAX_SPEED * MAX_SPEED) {
-            xv *= 0.7;
-            yv *= 0.7;
-        }
+        //System.out.println("   Creating New Particle");
+        initialize(x, y, color);
     }
 
     public void update() {
-        if (state != STATE_DEAD) {
+        if (state == STATE_ALIVE) {
             x += xv;
             y += yv;
 
@@ -71,6 +57,30 @@ public class Particle {
                 state = STATE_DEAD;
             }
         }
+    }
+
+    public void kill() {
+        state = STATE_DEAD;
+    }
+
+    public void initialize(int x, int y, Color color) {
+        //System.out.println("  Reusing Particle!!");
+        this.x = x;
+        this.y = y;
+        this.color = color;
+
+        width = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
+        height = random.nextInt(MAX_DIMENSION) + MIN_DIMENSION;
+        lifetime = random.nextInt(MAX_AGE) + MIN_AGE;
+        xv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
+        yv = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * random.nextDouble();
+
+        if (xv * xv + yv * yv > MAX_SPEED * MAX_SPEED) {
+            xv *= 0.7;
+            yv *= 0.7;
+        }
+
+        state = STATE_ALIVE;
     }
 
     public double getX() {

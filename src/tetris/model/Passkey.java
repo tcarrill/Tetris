@@ -44,10 +44,6 @@ public class Passkey {
         }
     }
 
-    public boolean isValidPasskey() {
-        return passkeyToLevel.get(getPasskeyString()) != null;
-    }
-
     public int getLevel() {
         Integer level = passkeyToLevel.get(getPasskeyString());
         return level == null ? 0 : level;
