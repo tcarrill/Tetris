@@ -12,7 +12,7 @@ A Java Tetris clone
 `G` Enable grid<br/>
 `D` Hard drop<br/>
 
-## Passwords
+## Passkeys
 9085823000 - Level 10<br/>
 4157802922 - Level 16<br/>
 0073735963 - Level 19
