@@ -4,7 +4,7 @@ Tetris
 A Java Tetris clone
 
 ## Controls
-`←` Move left
+`←` Move left<br/>
 `↑` Rotate left<br/>
 `→` Move right<br/>
 `↓` Rotate right<br/>
