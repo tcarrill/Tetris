@@ -5,10 +5,10 @@ A Java Tetris clone
 
 ## Controls
 `←` Move left
-`↑` Rotate left
-`→` Move right
-`↓` Rotate right
-`P` Pause
-`G` Enable grid
-`D` Hard drop
+`↑` Rotate left<br/>
+`→` Move right<br/>
+`↓` Rotate right<br/>
+`P` Pause<br/>
+`G` Enable grid<br/>
+`D` Hard drop<br/>
 
