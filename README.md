@@ -5,12 +5,12 @@ A Java Tetris clone
 
 ## Controls
 <kbd class='badmono'>←</kbd> Move left<br/>
-`↑` Rotate left<br/>
-`→` Move right<br/>
-`↓` Rotate right<br/>
-`P` Pause<br/>
-`G` Enable grid<br/>
-`D` Hard drop<br/>
+<kbd class='badmono'>↑</kbd> Rotate left<br/>
+<kbd class='badmono'>→</kbd> Move right<br/>
+<kbd class='badmono'>↓</kbd> Rotate right<br/>
+<kbd class='badmono'>p</kbd> Pause<br/>
+<kbd class='badmono'>g</kbd> Enable grid<br/>
+<kbd class='badmono'>d</kbd> Hard drop<br/>
 
 ## Passkeys
 9085823000 - Level 10<br/>
