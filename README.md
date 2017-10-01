@@ -3,6 +3,8 @@ Tetris
 
 A Java Tetris clone
 
+![Tetris](https://www.dropbox.com/s/j8bwd4uvbsgpx4q/tetris.png?dl=0)
+
 ## Controls
 <kbd class='badmono'>←</kbd> Move left<br/>
 <kbd class='badmono'>↑</kbd> Rotate left<br/>
