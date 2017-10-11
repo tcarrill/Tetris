@@ -65,7 +65,7 @@ public class BoardRenderer implements Renderer {
         }
 
         Block currentBlock = board.getCurrentBlock();
-        if (currentBlock.getBlock() != Tetromino.None) {
+        if (currentBlock != null && currentBlock.getBlock() != Tetromino.None) {
             for (int i = 0; i < 4; i++) {
                 int x = (board.getCurrentX() + currentBlock.x(i)) * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
                 int y = CENTER_BOARD_TOP + (Board.BOARD_HEIGHT - (board.getCurrentY() - currentBlock.y(i)) - 1) * SQUARE_HEIGHT;
@@ -80,13 +80,14 @@ public class BoardRenderer implements Renderer {
         graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 75, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
 
         Block nextBlock = board.getNextPiece();
+        if (nextBlock != null && nextBlock.getBlock() != Tetromino.None) {
+            for (int i = 0; i < 4; i++) {
+                int[] pos = nextBlock.getRelativeCoordsTable(nextBlock.getBlock().ordinal(), i);
+                int x = CENTER_BOARD_RIGHT + 75 + pos[0] * SQUARE_WIDTH;
+                int y = CENTER_BOARD_TOP + 100 + pos[1] * SQUARE_HEIGHT;
 
-        for (int i = 0; i < 4; i++) {
-            int[] pos = nextBlock.getRelativeCoordsTable(nextBlock.getBlock().ordinal(), i);
-            int x = CENTER_BOARD_RIGHT + 75 + pos[0] * SQUARE_WIDTH;
-            int y = CENTER_BOARD_TOP + 100 + pos[1] * SQUARE_HEIGHT;
-
-            drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
+                drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
+            }
         }
 
         List<ParticleEmitter> emitters = board.getParticleEmitters();

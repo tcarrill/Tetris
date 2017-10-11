@@ -24,7 +24,8 @@ public class Board {
     private ParticleSystem particleSystem;
 
     public Board(Score score) {
-        curPiece = new Block();
+        //curPiece = new Block();
+        nextPiece = new Block();
         this.score = score;
         board = new Tetromino[BOARD_WIDTH * BOARD_HEIGHT];
         particleSystem = new ParticleSystem();
@@ -40,6 +41,15 @@ public class Board {
                 oneLineDown();
             }
         }
+    }
+
+    public void reset() {
+        nextPiece = null;
+        isFallingFinished = false;
+        score.reset();
+        particleSystem.killAll();
+
+        clearBoard();
     }
 
     public void particleUpdate() {
@@ -67,10 +77,7 @@ public class Board {
     }
 
     public void start() {
-        isFallingFinished = false;
-        score.reset();
-        particleSystem.killAll();
-        clearBoard();
+        reset();
         spawnPiece();
     }
 
@@ -115,14 +122,14 @@ public class Board {
 
     private void spawnPiece() {
         if (nextPiece == null) {
-            curPiece.setRandomBlock();
+            curPiece = new Block();
         } else {
             curPiece = nextPiece;
         }
 
         score.incTetromino(curPiece.getBlock());
         nextPiece = new Block();
-        nextPiece.setRandomBlock();
+        //nextPiece.setRandomBlock();
 
         curX = BOARD_WIDTH / 2;
         curY = BOARD_HEIGHT - 1;

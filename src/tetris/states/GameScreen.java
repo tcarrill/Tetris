@@ -2,6 +2,8 @@ package tetris.states;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import tetris.BoardRenderer;
 import tetris.Observable;
 import tetris.Observer;
@@ -20,7 +22,7 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
     };
     public static final int ID = 1;
     public static final boolean DEBUG = false;
-
+    private Color backgroundRed = new Color(255, 0, 0, 200);
     private GameContainer gameContainer;
     private BoardRenderer boardRenderer;
     private Board board;
@@ -29,14 +31,16 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
     private long pausedPressTime = 0;
     private boolean gameover = false;
     private Score score;
-
+    private Tetris tetris;
     private static final String SCORE = Tetris.resources.getString("score");
     private static final String LINES = Tetris.resources.getString("lines");
     private static final String PAUSED = Tetris.resources.getString("paused");
     private static final String GAMEOVER = Tetris.resources.getString("gameover");
+    private static final String CONTINUE = Tetris.resources.getString("gameover_continue");
     private static final String LEVEL = Tetris.resources.getString("level");
     private int gameoverTextCenterHeight;
     private int gameoverTextCenterWidth;
+    private int continueTextCenterWidth;
 
     private int pausedTextCenterHeight;
     private int pausedTextCenterWidth;
@@ -49,7 +53,7 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
-        Tetris tetris = (Tetris) stateBasedGame;
+        tetris = (Tetris) stateBasedGame;
         score = tetris.getScore();
 
         tetris.getScore().registerObserver(this);
@@ -59,10 +63,12 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
         gameoverTextCenterWidth = menuFont.getWidth(GAMEOVER) / 2;
         gameoverTextCenterHeight = menuFont.getHeight(GAMEOVER) / 2;
 
+        continueTextCenterWidth = menuFont.getWidth(CONTINUE) / 2;
+
         pausedTextCenterWidth = menuFont.getWidth(PAUSED) / 2;
         pausedTextCenterHeight = menuFont.getHeight(PAUSED) / 2;
 
-        start();
+        //start();
     }
 
     @Override
@@ -75,12 +81,13 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
         menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP + 20, LINES + " " + score.getNumLinesRemoved(), Color.white);
 
         if (gameover) {
-            graphics.setColor(Color.red);
-            graphics.fillRect(Tetris.CENTER_WIDTH - (gameoverTextCenterWidth * 2), Tetris.CENTER_HEIGHT - (gameoverTextCenterHeight * 2), gameoverTextCenterWidth * 4, gameoverTextCenterHeight * 4);
+            graphics.setColor(backgroundRed);
+            graphics.fillRect(0, Tetris.CENTER_HEIGHT - (gameoverTextCenterHeight * 2), Tetris.WIDTH, gameoverTextCenterHeight * 8);
             menuFont.drawString(Tetris.CENTER_WIDTH - gameoverTextCenterWidth, Tetris.CENTER_HEIGHT - gameoverTextCenterHeight, GAMEOVER, Color.yellow);
+            menuFont.drawString(Tetris.CENTER_WIDTH - continueTextCenterWidth, Tetris.CENTER_HEIGHT - gameoverTextCenterHeight + 30, CONTINUE, Color.yellow);
         } else if (gameContainer.isPaused()) {
-            graphics.setColor(Color.red);
-            graphics.fillRect(Tetris.CENTER_WIDTH - (pausedTextCenterWidth * 2), Tetris.CENTER_HEIGHT - (pausedTextCenterHeight * 2), pausedTextCenterWidth * 4, pausedTextCenterHeight * 4);
+            graphics.setColor(backgroundRed);
+            graphics.fillRect(0, Tetris.CENTER_HEIGHT - (pausedTextCenterHeight * 2), Tetris.WIDTH, pausedTextCenterHeight * 4);
             menuFont.drawString(Tetris.CENTER_WIDTH - pausedTextCenterWidth, Tetris.CENTER_HEIGHT - pausedTextCenterHeight, PAUSED, Color.yellow);
         }
     }
@@ -117,6 +124,17 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
     }
 
     @Override
+    public void enter(GameContainer gameContainer, StateBasedGame game) {
+        start();
+    }
+
+    @Override
+    public void leave(GameContainer gameContainer, StateBasedGame game) {
+        gameover = false;
+        board.reset();
+    }
+
+    @Override
     public void keyPressed(int i, char c) {
         Input input = gameContainer.getInput();
 
@@ -124,7 +142,7 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
             if (input.isKeyDown(Input.KEY_Y)) {
                 start();
             } else if (input.isKeyDown(Input.KEY_N)) {
-
+                tetris.enterState(MainMenu.ID, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
 
             return;

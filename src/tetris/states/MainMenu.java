@@ -16,7 +16,7 @@ public class MainMenu extends BaseState implements KeyListener {
     private static final int CONTINUE = 1;
     private static final int HIGHSCORES = 2;
     private int selectedItem = PLAY;
-
+ 
     private static final String PLAY_STRING = Tetris.resources.getString("play");
     private static final String CONTINUE_STRING = Tetris.resources.getString("continue");
     private static final String HIGHSCORES_STRING = Tetris.resources.getString("highscores");
