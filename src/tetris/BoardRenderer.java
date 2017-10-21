@@ -74,16 +74,16 @@ public class BoardRenderer implements Renderer {
         }
 
         // Preview Next Piece
-        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 50, Tetris.resources.getString("next"));
+        gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 50, CENTER_BOARD_TOP + 50, Tetris.resources.getString("next"));
         graphics.setColor(Color.white);
-        graphics.drawRoundRect(CENTER_BOARD_RIGHT + 10, CENTER_BOARD_TOP + 70, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
-        graphics.fillRoundRect(CENTER_BOARD_RIGHT + 15, CENTER_BOARD_TOP + 75, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
+        graphics.drawRoundRect(CENTER_BOARD_RIGHT + 50, CENTER_BOARD_TOP + 70, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
+        graphics.fillRoundRect(CENTER_BOARD_RIGHT + 55, CENTER_BOARD_TOP + 75, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
 
         Block nextBlock = board.getNextPiece();
         if (nextBlock != null && nextBlock.getBlock() != Tetromino.None) {
             for (int i = 0; i < 4; i++) {
                 int[] pos = nextBlock.getRelativeCoordsTable(nextBlock.getBlock().ordinal(), i);
-                int x = CENTER_BOARD_RIGHT + 75 + pos[0] * SQUARE_WIDTH;
+                int x = CENTER_BOARD_RIGHT + 125 + pos[0] * SQUARE_WIDTH;
                 int y = CENTER_BOARD_TOP + 100 + pos[1] * SQUARE_HEIGHT;
 
                 drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
@@ -121,12 +121,23 @@ public class BoardRenderer implements Renderer {
     }
 
     private void drawBoardBorder(Graphics g) {
-        g.setColor(Color.white);
-        g.setLineWidth(BORDER_WIDTH);
-        g.drawLine(CENTER_BOARD_LEFT, CENTER_BOARD_TOP, CENTER_BOARD_RIGHT, CENTER_BOARD_TOP); // Top
-        g.drawLine(CENTER_BOARD_LEFT, CENTER_BOARD_BOTTOM, CENTER_BOARD_LEFT, CENTER_BOARD_TOP); // Left
-        g.drawLine(CENTER_BOARD_RIGHT, CENTER_BOARD_BOTTOM, CENTER_BOARD_RIGHT, CENTER_BOARD_TOP);  // Right
-        g.drawLine(CENTER_BOARD_LEFT, CENTER_BOARD_BOTTOM, CENTER_BOARD_RIGHT, CENTER_BOARD_BOTTOM); // Bottom
+        Color borderColor = new Color(200, 200, 200);
+        for (int i = 0; i < Board.BOARD_WIDTH + 2; i++) {
+            int x = i * SQUARE_WIDTH + CENTER_BOARD_LEFT - SQUARE_WIDTH;
+            int y = CENTER_BOARD_TOP - SQUARE_HEIGHT;
+            drawSquare(x, y, borderColor, g);
+            y = CENTER_BOARD_BOTTOM;
+            drawSquare(x, y, borderColor, g);
+        }
+
+        for (int i = 0; i < Board.BOARD_HEIGHT; i++) {
+            int x = CENTER_BOARD_LEFT - SQUARE_WIDTH;
+            int y = i * SQUARE_HEIGHT + CENTER_BOARD_TOP;
+            drawSquare(x, y, borderColor, g);
+
+            x = CENTER_BOARD_RIGHT - 1;
+            drawSquare(x, y, borderColor, g);
+        }
     }
 
     private void drawGrid(Graphics g) {

@@ -76,9 +76,9 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
         boardRenderer.render(graphics);
 
         //TODO: move these to a proper renderer
-        menuFont.drawString(BoardRenderer.CENTER_BOARD_LEFT - 100, BoardRenderer.CENTER_BOARD_TOP, LEVEL + " " + score.getCurrentLevel(), Color.white);
-        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP, SCORE + " " + score.getScore(), Color.white);
-        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 10, BoardRenderer.CENTER_BOARD_TOP + 20, LINES + " " + score.getNumLinesRemoved(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_LEFT - 125, BoardRenderer.CENTER_BOARD_TOP, LEVEL + " " + score.getCurrentLevel(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 50, BoardRenderer.CENTER_BOARD_TOP, SCORE + " " + score.getScore(), Color.white);
+        menuFont.drawString(BoardRenderer.CENTER_BOARD_RIGHT + 50, BoardRenderer.CENTER_BOARD_TOP + 20, LINES + " " + score.getNumLinesRemoved(), Color.white);
 
         if (gameover) {
             graphics.setColor(backgroundRed);
