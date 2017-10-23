@@ -90,12 +90,24 @@ public class BoardRenderer implements Renderer {
         graphics.fillRoundRect(CENTER_BOARD_RIGHT + 55, CENTER_BOARD_TOP + 75, PREVIEW_WIDTH, PREVIEW_HEIGHT, 5);
 
         Block nextBlock = board.getNextPiece();
+        Tetromino nextTetromino = nextBlock.getBlock();
         if (nextBlock != null && nextBlock.getBlock() != Tetromino.None) {
+            int xOffset = 110;
+            int yOffset = 110;
+
+            if (nextTetromino == Tetromino.IBlock) {
+                xOffset = 120;
+                yOffset = 120;
+            } else if (nextTetromino == Tetromino.OBlock) {
+                xOffset = 120;
+                yOffset = 105;
+            }
+
             for (int i = 0; i < 4; i++) {
                 int[] pos = nextBlock.getRelativeCoordsTable(nextBlock.getBlock().ordinal(), i);
-                int x = CENTER_BOARD_RIGHT + 125 + pos[0] * SQUARE_WIDTH;
-                int y = CENTER_BOARD_TOP + 100 + pos[1] * SQUARE_HEIGHT;
 
+                int x = CENTER_BOARD_RIGHT + xOffset + pos[0] * SQUARE_WIDTH;
+                int y = CENTER_BOARD_TOP + yOffset + pos[1] * SQUARE_HEIGHT;
                 drawSquare(x, y, colors[nextBlock.getBlock().ordinal()], graphics);
             }
         }
