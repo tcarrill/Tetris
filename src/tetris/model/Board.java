@@ -57,7 +57,12 @@ public class Board {
     }
 
     public Tetromino getBlock(int x, int y) {
-        return board[(y * BOARD_WIDTH) + x];
+        int index = (y * BOARD_WIDTH) + x;
+        if (index < board.length) {
+            return board[(y * BOARD_WIDTH) + x];
+        } else {
+            return null;
+        }
     }
 
     public void setBlock(int x, int y, Tetromino tetromino) {
@@ -195,7 +200,7 @@ public class Board {
 
                 for (int j = 0; j < BOARD_WIDTH; j++) {
                     Tetromino tetromino = getBlock(j, i);
-                    // todo: BOARD_HEIGHT - i is shitty
+                    //todo: BOARD_HEIGHT - i is shitty
                     particleSystem.addEmitter(50, j, BOARD_HEIGHT - i, BoardRenderer.colors[tetromino.ordinal()]);
                 }
 

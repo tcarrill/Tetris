@@ -25,9 +25,10 @@ public class BoardRenderer implements Renderer {
     private Board board;
     private GameContainer gameContainer;
     private boolean isShowingGrid = false;
+    private boolean isShowingShadow = false;
     private static final Color GRID_COLOR = new Color(50, 50, 50);
 
-    // todo: move this somewhere else
+    //todo: move this somewhere else
     public static final Color colors[] = {
             new Color(0, 0, 0),
             new Color(1, 255, 255),  //I
@@ -70,10 +71,19 @@ public class BoardRenderer implements Renderer {
                 int x = (board.getCurrentX() + currentBlock.x(i)) * SQUARE_WIDTH + CENTER_BOARD_LEFT + 1;
                 int y = CENTER_BOARD_TOP + (Board.BOARD_HEIGHT - (board.getCurrentY() - currentBlock.y(i)) - 1) * SQUARE_HEIGHT;
                 drawSquare(x, y, colors[currentBlock.getBlock().ordinal()], graphics);
+
+                if (isShowingShadow) {
+                    int nextY = currentBlock.y(i) + 1;
+                    Tetromino nextBlock = board.getBlock(x, nextY);
+                    while (nextBlock != null && nextBlock != Tetromino.None) {
+                        drawSquare(x, nextY + SQUARE_HEIGHT, Color.white, graphics);
+                        nextBlock = board.getBlock(x, ++nextY);
+                    }
+                }
             }
         }
 
-        // Preview Next Piece
+        //Preview Next Piece
         gameContainer.getDefaultFont().drawString(CENTER_BOARD_RIGHT + 50, CENTER_BOARD_TOP + 50, Tetris.resources.getString("next"));
         graphics.setColor(Color.white);
         graphics.drawRoundRect(CENTER_BOARD_RIGHT + 50, CENTER_BOARD_TOP + 70, PREVIEW_WIDTH + 10, PREVIEW_HEIGHT + 10, 5);
@@ -103,40 +113,46 @@ public class BoardRenderer implements Renderer {
     }
 
     private void drawSquare(int x, int y, Color color, Graphics g) {
+        drawSquare(x, y, color, g, true);
+    }
+
+    private void drawSquare(int x, int y, Color color, Graphics g, boolean drawHighlight) {
         g.setColor(color);
         g.fillRect(x + 1, y + 1, SQUARE_WIDTH - 2, SQUARE_HEIGHT - 2);
         g.setLineWidth(1);
         g.setColor(color.brighter());
-        g.drawLine(x, y + SQUARE_HEIGHT - 1, x, y);
-        g.drawLine(x, y, x + SQUARE_WIDTH - 1, y);
+        g.drawLine(x, y + SQUARE_HEIGHT - 1, x, y); //left
+        g.drawLine(x, y, x + SQUARE_WIDTH - 1, y); //top
 
         g.setColor(color.darker());
-        g.drawLine(x + 1, y + SQUARE_HEIGHT - 1, x + SQUARE_WIDTH - 1, y + SQUARE_HEIGHT - 1);
-        g.drawLine(x + SQUARE_WIDTH - 1, y + SQUARE_HEIGHT - 1, x + SQUARE_WIDTH - 1, y + 1);
+        g.drawLine(x + 1, y + SQUARE_HEIGHT - 1, x + SQUARE_WIDTH - 1, y + SQUARE_HEIGHT - 1); //right
+        g.drawLine(x + SQUARE_WIDTH - 1, y + SQUARE_HEIGHT - 1, x + SQUARE_WIDTH - 1, y + 1); //bottom
 
-        // NES Tetris style specular highlight
-        g.setColor(Color.white);
-        g.fillRect(x + 2, y + 2, 5, 2);
-        g.fillRect(x + 2, y + 4, 2, 3);
+        if (drawHighlight) {
+            //NES Tetris style specular highlight
+            g.setColor(Color.white);
+            g.fillRect(x + 2, y + 2, 5, 2);
+            g.fillRect(x + 2, y + 4, 2, 3);
+        }
     }
 
     private void drawBoardBorder(Graphics g) {
-        Color borderColor = new Color(200, 200, 200);
+        Color borderColor = new Color(100, 100, 100);
         for (int i = 0; i < Board.BOARD_WIDTH + 2; i++) {
-            int x = i * SQUARE_WIDTH + CENTER_BOARD_LEFT - SQUARE_WIDTH;
+            int x = (i * SQUARE_WIDTH + CENTER_BOARD_LEFT - SQUARE_WIDTH) + 1;
             int y = CENTER_BOARD_TOP - SQUARE_HEIGHT;
-            drawSquare(x, y, borderColor, g);
+            drawSquare(x, y, borderColor, g, false); //top
             y = CENTER_BOARD_BOTTOM;
-            drawSquare(x, y, borderColor, g);
+            drawSquare(x, y, borderColor, g, false); //bottom
         }
 
         for (int i = 0; i < Board.BOARD_HEIGHT; i++) {
-            int x = CENTER_BOARD_LEFT - SQUARE_WIDTH;
+            int x = (CENTER_BOARD_LEFT - SQUARE_WIDTH) + 1;
             int y = i * SQUARE_HEIGHT + CENTER_BOARD_TOP;
-            drawSquare(x, y, borderColor, g);
+            drawSquare(x, y, borderColor, g, false); //left
 
-            x = CENTER_BOARD_RIGHT - 1;
-            drawSquare(x, y, borderColor, g);
+            x = CENTER_BOARD_RIGHT;
+            drawSquare(x, y, borderColor, g, false); //right
         }
     }
 
@@ -166,5 +182,18 @@ public class BoardRenderer implements Renderer {
 
     public boolean isShowingGrid() {
         return isShowingGrid;
+    }
+
+    public boolean isShowingShadow() {
+        return isShowingShadow;
+    }
+
+    public void setShowingShadow(boolean isShowingShadow) {
+        if (isShowingShadow) {
+            System.out.println("Showing shadow");
+        } else {
+            System.out.println("Hiding shadow");
+        }
+        this.isShowingShadow = isShowingShadow;
     }
 }

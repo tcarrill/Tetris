@@ -173,6 +173,8 @@ public class GameScreen extends BaseState implements KeyListener, Observer {
 
         if (input.isKeyDown(Input.KEY_G)) {
             boardRenderer.setShowingGrid(!boardRenderer.isShowingGrid());
+        } else if (input.isKeyDown(Input.KEY_S)) {
+            boardRenderer.setShowingShadow(!boardRenderer.isShowingShadow());
         }
     }
 
