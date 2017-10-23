@@ -3,7 +3,7 @@ Tetris
 
 A Java Tetris clone
 
-![Tetris](https://i.imgur.com/tX1ESrR.png)
+![Tetris](https://i.imgur.com/PHib4CO.png)
 
 ## Controls
 <kbd class='badmono'>←</kbd> Move left<br/>
